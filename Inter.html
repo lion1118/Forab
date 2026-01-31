@@ -1,322 +1,956 @@
 ```html
 <!DOCTYPE html>
-没有人</<html 朗​“zh-CN”​​ 朗​"zh-CN"​
-<​​​​</head>​​​​​
-    元元 字符码​"UTF-8"
-    <!-- 微信关键meta标签 -->
-    元元 姓名​“视口”“内容“宽度=设备宽度，初始尺度=1.0，最大尺度=1.0；用户可升级性=无，视角适应度=覆盖”
-    元元 姓名“apple-mobile-web-app-capable" "内容"是的""
-    元元 姓名“apple-mobile-web-app-status-bar-style" "内容"黑色""
-    元元 姓名“format-detection" "内容"电话=不，电子邮件=不""
-来源http-equiv"X-UA-Compatible""内容“ie=edge”
-    
-    <!-- 防止IOS橡皮筋效果 -->
-    <"风格
-， </html>，</body>​​​​​​​ ​
-            位置固定
-            宽度​100%​
-            高度​100%​
-            泛滥​hidden​
-            -webkit-tap-高亮颜色​transparent​
-            -webkit-touch-呼叫none
-            -webkit-用户选择none
-            用户选择无
-        }}
-​"风格​
-    
-​<灰度灰度​​鳌拜专属——百万个啵啵​​​​​​
-    <"风格
-        /* 原有CSS代码保持不变，但添加以下适配 */
-        * ​
-            -webkit-文本大小调整100%
--webkit-字体平滑化
--moz-osx-字体平滑灰度
-        }}
-        
-        /* 适配微信底部安全区域 */
-        body {
-            padding-bottom: constant(safe-area-inset-bottom);
-            padding-bottom: env(safe-area-inset-bottom);
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>清一色酒吧 - 语音点歌休闲空间</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
         }
         
-        /* 微信中touch-action需要更精确 */
-        #canvas {
-            touch-action: pan-y pinch-zoom;
+        :root {
+            --primary-color: #8a2be2;
+            --secondary-color: #ff00ff;
+            --accent-color: #00ffff;
+            --dark-bg: #0a0a1a;
+            --darker-bg: #050510;
+            --light-text: #f0f0ff;
+            --neon-shadow: 0 0 10px var(--secondary-color), 0 0 20px var(--secondary-color);
         }
         
-        /* 适配微信字体 */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(138, 43, 226, 0.15) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255, 0, 255, 0.1) 0%, transparent 20%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* 头部样式 */
+        header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--primary-color);
+            position: relative;
+        }
+        
+        .logo {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(138, 43, 226, 0.7);
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--accent-color);
+            font-style: italic;
+            margin-top: 10px;
+        }
+        
+        /* 主内容区布局 */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 25px;
+        }
+        
+        /* 直播区域 */
+        .live-section {
+            background-color: rgba(10, 10, 26, 0.7);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title i {
+            color: var(--secondary-color);
+        }
+        
+        .live-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            background-color: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .live-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+        }
+        
+        .live-placeholder i {
+            font-size: 5rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .live-placeholder p {
+            font-size: 1.2rem;
+            color: var(--accent-color);
+            text-align: center;
+            max-width: 80%;
+        }
+        
+        /* 音乐播放器 */
+        .music-player {
+            background-color: rgba(20, 20, 40, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 25px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+        }
+        
+        .player-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+            margin: 20px 0;
+        }
+        
+        .player-btn {
+            background: transparent;
+            border: none;
+            color: var(--accent-color);
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .player-btn:hover {
+            background-color: rgba(0, 255, 255, 0.1);
+            transform: scale(1.1);
+        }
+        
+        .play-btn {
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 2rem;
+            box-shadow: var(--neon-shadow);
+        }
+        
+        .play-btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .song-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .song-cover {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 2px solid var(--secondary-color);
+        }
+        
+        .song-title {
+            font-size: 1.3rem;
+            color: var(--light-text);
+        }
+        
+        .song-artist {
+            font-size: 1rem;
+            color: var(--accent-color);
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin: 20px 0;
+            cursor: pointer;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 3px;
+            width: 30%;
+            position: relative;
+        }
+        
+        /* 侧边栏 */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        /* 点歌功能 */
+        .request-song {
+            background-color: rgba(10, 10, 26, 0.7);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 0, 255, 0.3);
+        }
+        
+        .request-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .form-group label {
+            color: var(--accent-color);
+            font-size: 0.9rem;
+        }
+        
+        .form-group input {
+            padding: 12px;
+            background-color: rgba(20, 20, 40, 0.8);
+            border: 1px solid rgba(138, 43, 226, 0.5);
+            border-radius: 8px;
+            color: var(--light-text);
+            font-size: 1rem;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+        }
+        
+        .submit-btn {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(138, 43, 226, 0.4);
+        }
+        
+        /* 小游戏区域 */
+        .games-section {
+            background-color: rgba(10, 10, 26, 0.7);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+        }
+        
+        .games-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .game-card {
+            background-color: rgba(20, 20, 40, 0.8);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+        }
+        
+        .game-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+            box-shadow: 0 5px 15px rgba(0, 255, 255, 0.2);
+        }
+        
+        .game-icon {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+        
+        .game-title {
+            font-size: 1.1rem;
+            color: var(--light-text);
+        }
+        
+        /* 游戏模态框 */
+        .game-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .game-content {
+            background-color: var(--darker-bg);
+            border-radius: 15px;
+            padding: 25px;
+            width: 90%;
+            max-width: 500px;
+            border: 2px solid var(--primary-color);
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: transparent;
+            border: none;
+            color: var(--accent-color);
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+        
+        /* 骰子游戏样式 */
+        .dice-game {
+            text-align: center;
+        }
+        
+        .dice-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .dice {
+            width: 80px;
+            height: 80px;
+            background-color: white;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.5rem;
+            color: #333;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .roll-btn {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .roll-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+        }
+        
+        /* 通知样式 */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+        
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .live-container {
+                height: 400px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5rem;
+            }
+            
+            .games-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .live-container {
+                height: 300px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- 添加微信加载提示 -->
-    <div id="wechat-loading" style="
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: #1a1a2e;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-        color: white;
-        font-size: 18px;
-    ">
-        <div style="margin-bottom: 20px; font-size: 40px;">✨</div>
-        <div>加载啵啵表情雨...</div>
-        <div id="load-progress" style="margin-top: 20px; color: #ff6699;">0%</div>
+    <div class="container">
+        <header>
+            <h1 class="logo">清一色酒吧</h1>
+            <p class="tagline">欢迎回家！这里有你喜欢的音乐、直播和休闲时光</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="left-column">
+                <!-- 直播区域 -->
+                <section class="live-section">
+                    <h2 class="section-title"><i class="fas fa-broadcast-tower"></i> 清一色直播</h2>
+                    <div class="live-container">
+                        <div class="live-placeholder">
+                            <i class="fas fa-satellite-dish"></i>
+                            <p>清一色酒吧实时直播流<br>当前直播暂时离线，开启后这里将显示实时画面</p>
+                            <p style="margin-top: 15px; font-size: 1rem; color: #aaa;">如需接入真实直播，请在此处替换为直播嵌入代码</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 音乐播放器 -->
+                    <div class="music-player">
+                        <h2 class="section-title"><i class="fas fa-music"></i> 酒吧音乐</h2>
+                        
+                        <div class="song-info">
+                            <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="歌曲封面" class="song-cover">
+                            <div>
+                                <div class="song-title">夜空中最亮的星</div>
+                                <div class="song-artist">逃跑计划</div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-container">
+                            <div class="progress-bar"></div>
+                        </div>
+                        
+                        <div class="player-controls">
+                            <button class="player-btn" id="prev-btn">
+                                <i class="fas fa-step-backward"></i>
+                            </button>
+                            <button class="player-btn play-btn" id="play-btn">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <button class="player-btn" id="next-btn">
+                                <i class="fas fa-step-forward"></i>
+                            </button>
+                            <button class="player-btn" id="volume-btn">
+                                <i class="fas fa-volume-up"></i>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            
+            <div class="sidebar">
+                <!-- 点歌功能 -->
+                <section class="request-song">
+                    <h2 class="section-title"><i class="fas fa-microphone-alt"></i> 语音点歌</h2>
+                    <p style="margin-bottom: 20px; color: #ccc;">想听的歌，告诉我们！清一色为你播放</p>
+                    
+                    <form class="request-form" id="song-request-form">
+                        <div class="form-group">
+                            <label for="song-name">歌曲名称</label>
+                            <input type="text" id="song-name" placeholder="例如：平凡之路" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="song-artist">歌手/乐队</label>
+                            <input type="text" id="song-artist" placeholder="例如：朴树">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="requester-name">你的名字（可选）</label>
+                            <input type="text" id="requester-name" placeholder="让主播知道是谁点的歌">
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">提交点歌请求</button>
+                    </form>
+                </section>
+                
+                <!-- 小游戏区域 -->
+                <section class="games-section">
+                    <h2 class="section-title"><i class="fas fa-gamepad"></i> 休闲小游戏</h2>
+                    <p style="margin-bottom: 20px; color: #ccc;">放松一下，玩个小游戏吧</p>
+                    
+                    <div class="games-container">
+                        <div class="game-card" data-game="dice">
+                            <div class="game-icon">
+                                <i class="fas fa-dice"></i>
+                            </div>
+                            <div class="game-title">骰子游戏</div>
+                        </div>
+                        
+                        <div class="game-card" data-game="luck">
+                            <div class="game-icon">
+                                <i class="fas fa-clover"></i>
+                            </div>
+                            <div class="game-title">幸运抽签</div>
+                        </div>
+                        
+                        <div class="game-card" data-game="puzzle">
+                            <div class="game-icon">
+                                <i class="fas fa-puzzle-piece"></i>
+                            </div>
+                            <div class="game-title">解压拼图</div>
+                        </div>
+                        
+                        <div class="game-card" data-game="memory">
+                            <div class="game-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <div class="game-title">记忆挑战</div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
     </div>
     
-    <!-- 原有HTML结构保持不变 -->
-    <div class="counter">啵啵能量: <span id="count">0</span></div>
-    <!-- ... 其他原有HTML ... -->
-    <canvas id="canvas"></canvas>
+    <!-- 游戏模态框 -->
+    <div class="game-modal" id="game-modal">
+        <div class="game-content">
+            <button class="close-modal" id="close-modal">&times;</button>
+            <div id="game-container">
+                <!-- 游戏内容将动态加载到这里 -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- 通知 -->
+    <div class="notification" id="notification">
+        点歌请求已提交！主播会尽快为您播放
+    </div>
+    
+    <!-- 音频元素 -->
+    <audio id="background-music" loop>
+        <source src="https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3" type="audio/mpeg">
+        您的浏览器不支持音频元素
+    </audio>
+    
+    <!-- 骰子音效 -->
+    <audio id="dice-sound">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-dice-roll-1994.mp3" type="audio/mpeg">
+    </audio>
 
     <script>
-        // ========== 微信适配核心代码 ==========
+        // 音乐播放器功能
+        const backgroundMusic = document.getElementById('background-music');
+        const playBtn = document.getElementById('play-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const volumeBtn = document.getElementById('volume-btn');
+        const progressBar = document.querySelector('.progress-bar');
+        const progressContainer = document.querySelector('.progress-container');
+        const songTitle = document.querySelector('.song-title');
+        const songArtist = document.querySelector('.song-artist');
+        const songCover = document.querySelector('.song-cover');
         
-        // 1. 检测微信环境
-        function isWeChat() {
-            const ua = navigator.userAgent.toLowerCase();
-            return ua.indexOf('micromessenger') !== -1;
-        }
-        
-        // 2. 微信音频自动播放处理
-        function setupWeChatAudio() {
-            document.addEventListener('WeixinJSBridgeReady', function() {
-                // 微信JSBridge准备就绪后，可以自动播放音频
-                const audio = new Audio();
-                audio.src = 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA=='; // 空音频
-                audio.play().then(() => {
-                    console.log('微信音频自动播放已启用');
-                });
-            });
-        }
-        
-        // 3. 防止微信下拉刷新
-        let startY = 0;
-        document.addEventListener('touchstart', function(e) {
-            startY = e.touches[0].clientY;
-        }, { passive: true });
-        
-        document.addEventListener('touchmove', function(e) {
-            const currentY = e.touches[0].clientY;
-            // 如果页面在顶部且下拉，阻止默认行为
-            if (document.documentElement.scrollTop <= 0 && currentY > startY) {
-                e.preventDefault();
+        // 歌曲列表
+        const songs = [
+            {
+                title: "夜空中最亮的星",
+                artist: "逃跑计划",
+                cover: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                title: "成都",
+                artist: "赵雷",
+                cover: "https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
+            },
+            {
+                title: "平凡之路",
+                artist: "朴树",
+                cover: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80"
             }
-        }, { passive: false });
+        ];
         
-        // 4. 微信加载优化
-        window.addEventListener('load', function() {
-            const loading = document.getElementById('wechat-loading');
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += 10;
-                document.getElementById('load-progress').textContent = `${progress}%`;
-                if (progress >= 100) {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        loading.style.opacity = '0';
-                        setTimeout(() => {
-                            loading.style.display = 'none';
-                        }, 500);
-                    }, 300);
-                }
-            }, 100);
+        let currentSongIndex = 0;
+        let isPlaying = false;
+        
+        // 更新歌曲信息
+        function updateSongInfo() {
+            songTitle.textContent = songs[currentSongIndex].title;
+            songArtist.textContent = songs[currentSongIndex].artist;
+            songCover.src = songs[currentSongIndex].cover;
+        }
+        
+        // 播放/暂停音乐
+        function togglePlay() {
+            if (isPlaying) {
+                backgroundMusic.pause();
+                playBtn.innerHTML = '<i class="fas fa-play"></i>';
+            } else {
+                backgroundMusic.play();
+                playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            }
+            isPlaying = !isPlaying;
+        }
+        
+        // 切换歌曲
+        function changeSong(direction) {
+            currentSongIndex += direction;
             
-            // 初始化原有程序
-            initApp();
+            if (currentSongIndex < 0) {
+                currentSongIndex = songs.length - 1;
+            } else if (currentSongIndex >= songs.length) {
+                currentSongIndex = 0;
+            }
+            
+            updateSongInfo();
+            
+            // 如果是播放状态，继续播放新歌曲
+            if (isPlaying) {
+                backgroundMusic.play();
+            }
+        }
+        
+        // 更新进度条
+        function updateProgress() {
+            const { currentTime, duration } = backgroundMusic;
+            const progressPercent = (currentTime / duration) * 100;
+            progressBar.style.width = `${progressPercent}%`;
+        }
+        
+        // 设置进度条
+        function setProgress(e) {
+            const width = this.clientWidth;
+            const clickX = e.offsetX;
+            const duration = backgroundMusic.duration;
+            
+            backgroundMusic.currentTime = (clickX / width) * duration;
+        }
+        
+        // 切换音量
+        function toggleVolume() {
+            if (backgroundMusic.volume === 0) {
+                backgroundMusic.volume = 0.5;
+                volumeBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+            } else if (backgroundMusic.volume === 0.5) {
+                backgroundMusic.volume = 1;
+                volumeBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+            } else {
+                backgroundMusic.volume = 0;
+                volumeBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+            }
+        }
+        
+        // 事件监听
+        playBtn.addEventListener('click', togglePlay);
+        prevBtn.addEventListener('click', () => changeSong(-1));
+        nextBtn.addEventListener('click', () => changeSong(1));
+        volumeBtn.addEventListener('click', toggleVolume);
+        backgroundMusic.addEventListener('timeupdate', updateProgress);
+        progressContainer.addEventListener('click', setProgress);
+        
+        // 初始化
+        updateSongInfo();
+        
+        // 点歌功能
+        const songRequestForm = document.getElementById('song-request-form');
+        const notification = document.getElementById('notification');
+        
+        songRequestForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const songName = document.getElementById('song-name').value;
+            const songArtist = document.getElementById('song-artist').value;
+            const requesterName = document.getElementById('requester-name').value || '匿名';
+            
+            // 显示通知
+            notification.textContent = `感谢${requesterName}点歌《${songName}》${songArtist ? ` - ${songArtist}` : ''}，主播会尽快为您播放！`;
+            notification.classList.add('show');
+            
+            // 3秒后隐藏通知
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+            
+            // 重置表单
+            songRequestForm.reset();
+            
+            // 这里可以添加将点歌请求发送到服务器的代码
+            console.log(`点歌请求: 歌曲《${songName}》, 歌手${songArtist}, 点歌人${requesterName}`);
         });
         
-        // 5. 微信分享配置
-        function setupWeChatShare() {
-            if (!isWeChat()) return;
-            
-            // 注意：以下配置需要在微信JS-SDK环境中使用
-            // 实际使用时需要后端生成签名
-            /*
-            wx.config({
-                debug: false,
-                appId: '你的AppID',
-                timestamp: 时间戳,
-                nonceStr: '随机字符串',
-                signature: '签名',
-                jsApiList: [
-                    'onMenuShareTimeline',
-                    'onMenuShareAppMessage',
-                    'updateAppMessageShareData',
-                    'updateTimelineShareData'
-                ]
-            });
-            
-            wx.ready(function() {
-                // 分享到朋友圈
-                wx.updateTimelineShareData({
-                    title: '超有趣的啵啵表情雨！',
-                    link: window.location.href,
-                    imgUrl: '分享图标的URL'
-                });
-                
-                // 分享给朋友
-                wx.updateAppMessageShareData({
-                    title: '快来玩啵啵表情雨！',
-                    desc: '滑动屏幕召唤浪漫啵啵雨，还有惊喜特效！',
-                    link: window.location.href,
-                    imgUrl: '分享图标的URL'
-                });
-            });
-            */
-            
-            // 简易分享提示（无SDK版）
-            const shareHint = document.createElement('div');
-            shareHint.innerHTML = `
-                <div style="
-                    position: fixed;
-                    bottom: 80px;
-                    right: 20px;
-                    background: rgba(255,102,153,0.9);
-                    color: white;
-                    padding: 10px 15px;
-                    border-radius: 20px;
-                    font-size: 14px;
-                    z-index: 1000;
-                    animation: float 3s ease-in-out infinite;
-                ">
-                    👆 点击右上角分享给朋友
+        // 小游戏功能
+        const gameCards = document.querySelectorAll('.game-card');
+        const gameModal = document.getElementById('game-modal');
+        const closeModal = document.getElementById('close-modal');
+        const gameContainer = document.getElementById('game-container');
+        const diceSound = document.getElementById('dice-sound');
+        
+        // 骰子游戏
+        function loadDiceGame() {
+            gameContainer.innerHTML = `
+                <div class="dice-game">
+                    <h2 style="color: var(--accent-color); margin-bottom: 20px;">骰子游戏</h2>
+                    <p>点击掷骰子，看看你的运气如何！</p>
+                    
+                    <div class="dice-container">
+                        <div class="dice" id="dice1">1</div>
+                        <div class="dice" id="dice2">2</div>
+                    </div>
+                    
+                    <p id="dice-result" style="margin: 20px 0; font-size: 1.2rem; color: var(--secondary-color);"></p>
+                    
+                    <button class="roll-btn" id="roll-dice">掷骰子</button>
                 </div>
             `;
-            document.body.appendChild(shareHint);
-        }
-        
-        // ========== 原有JS代码（需要包裹在函数中） ==========
-        function initApp() {
-            // 这里放置你原有的所有JavaScript代码
-            // 只需要将原来的代码复制到这里，除了window.onload部分
             
-            // 初始化Canvas
-            const canvas = document.getElementById('canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            const rollDiceBtn = document.getElementById('roll-dice');
+            const dice1 = document.getElementById('dice1');
+            const dice2 = document.getElementById('dice2');
+            const diceResult = document.getElementById('dice-result');
             
-            // ... 你的所有原有代码 ...
-            
-            // 特别注意：修改触摸事件处理，适配微信
-            function setupTouchEvents() {
-                let isTouching = false;
-                let lastTouchTime = 0;
+            rollDiceBtn.addEventListener('click', function() {
+                // 播放音效
+                diceSound.currentTime = 0;
+                diceSound.play();
                 
-                // 微信中需要更精确的触摸控制
-                canvas.addEventListener('touchstart', function(e) {
-                    e.preventDefault();
-                    isTouching = true;
-                    const touch = e.touches[0];
-                    lastTouchTime = Date.now();
-                    handleInteraction(touch.clientX, touch.clientY, true);
-                }, { passive: false });
+                // 添加动画效果
+                dice1.style.animation = 'none';
+                dice2.style.animation = 'none';
+                setTimeout(() => {
+                    dice1.style.animation = 'roll 1s ease-out';
+                    dice2.style.animation = 'roll 1s ease-out';
+                }, 10);
                 
-                canvas.addEventListener('touchmove', function(e) {
-                    e.preventDefault();
-                    if (isTouching) {
-                        const now = Date.now();
-                        // 限制触摸频率，提高性能
-                        if (now - lastTouchTime > 16) { // 约60fps
-                            for (let touch of e.touches) {
-                                handleInteraction(touch.clientX, touch.clientY, false);
-                            }
-                            lastTouchTime = now;
-                        }
+                // 生成随机骰子点数
+                const diceValue1 = Math.floor(Math.random() * 6) + 1;
+                const diceValue2 = Math.floor(Math.random() * 6) + 1;
+                const total = diceValue1 + diceValue2;
+                
+                // 延迟显示结果，配合动画
+                setTimeout(() => {
+                    dice1.textContent = diceValue1;
+                    dice2.textContent = diceValue2;
+                    
+                    // 显示结果
+                    let resultText = `你掷出了 ${diceValue1} 和 ${diceValue2}，总共 ${total} 点。`;
+                    
+                    if (total === 12) {
+                        resultText += " 太棒了！双六！今天运气爆棚！";
+                    } else if (total >= 10) {
+                        resultText += " 运气不错哦！";
+                    } else if (total <= 4) {
+                        resultText += " 再接再厉！";
                     }
-                }, { passive: false });
-                
-                canvas.addEventListener('touchend', function() {
-                    isTouching = false;
-                });
-                
-                // 鼠标事件保留，用于调试
-                canvas.addEventListener('mousedown', function(e) {
-                    isTouching = true;
-                    handleInteraction(e.clientX, e.clientY, true);
-                });
-                
-                canvas.addEventListener('mousemove', function(e) {
-                    if (isTouching) {
-                        handleInteraction(e.clientX, e.clientY, false);
-                    }
-                });
-                
-                canvas.addEventListener('mouseup', function() {
-                    isTouching = false;
-                });
-            }
+                    
+                    diceResult.textContent = resultText;
+                }, 500);
+            });
             
-            // 初始化触摸事件
-            setupTouchEvents();
-            setupWeChatAudio();
-            setupWeChatShare();
-            
-            // 初始化粒子
-            initializeParticles();
-            animate();
+            // 添加CSS动画
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes roll {
+                    0% { transform: rotate(0deg) scale(1); }
+                    50% { transform: rotate(180deg) scale(1.1); }
+                    100% { transform: rotate(360deg) scale(1); }
+                }
+            `;
+            document.head.appendChild(style);
         }
         
-        // ========== 性能优化（微信专用） ==========
-        
-        // 1. 降低粒子数量
-        const CONFIG = {
-            maxParticles: 300,  // 微信中减少粒子数量
-            spawnCount: 5,      // 减少每次生成数量
-            targetCount: 80     // 降低触发阈值
-        };
-        
-        // 2. 帧率控制
-        let lastFrameTime = 0;
-        const FPS = 60;
-        const frameInterval = 1000 / FPS;
-        
-        function animateOptimized(timestamp) {
-            if (timestamp - lastFrameTime >= frameInterval) {
-                lastFrameTime = timestamp;
-                
-                // 原有的绘制逻辑
-                ctx.fillStyle = 'rgba(26, 26, 46, 0.1)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                
-                // ... 原有动画逻辑 ...
-                
-                // 微信中简化粒子效果
-                particles.forEach(particle => {
-                    particle.update();
-                    particle.draw();
-                });
-            }
+        // 幸运抽签游戏
+        function loadLuckGame() {
+            const fortunes = [
+                "大吉：今天会有意想不到的好运！",
+                "中吉：你的努力即将得到回报",
+                "小吉：平稳的一天，适合放松心情",
+                "吉：小小的惊喜正在路上",
+                "末吉：保持积极心态，好事自然来",
+                "凶：注意细节，避免小失误",
+                "大凶：不妨休息一下，明天会更好"
+            ];
             
-            requestAnimationFrame(animateOptimized);
+            gameContainer.innerHTML = `
+                <div style="text-align: center;">
+                    <h2 style="color: var(--accent-color); margin-bottom: 20px;">幸运抽签</h2>
+                    <p>点击抽签，看看你今天的运势如何</p>
+                    
+                    <div style="margin: 30px 0;">
+                        <div id="fortune-result" style="font-size: 2rem; color: var(--secondary-color); min-height: 80px; display: flex; align-items: center; justify-content: center;">
+                            等待抽签...
+                        </div>
+                    </div>
+                    
+                    <button class="roll-btn" id="draw-fortune">抽签</button>
+                </div>
+            `;
+            
+            const drawFortuneBtn = document.getElementById('draw-fortune');
+            const fortuneResult = document.getElementById('fortune-result');
+            
+            drawFortuneBtn.addEventListener('click', function() {
+                // 添加加载效果
+                fortuneResult.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                
+                // 延迟显示结果
+                setTimeout(() => {
+                    const randomIndex = Math.floor(Math.random() * fortunes.length);
+                    const fortune = fortunes[randomIndex];
+                    
+                    // 根据运势设置颜色
+                    let color = var('--accent-color');
+                    if (fortune.includes('大吉')) color = '#ff0000';
+                    else if (fortune.includes('凶')) color = '#999999';
+                    
+                    fortuneResult.style.color = color;
+                    fortuneResult.textContent = fortune;
+                }, 800);
+            });
         }
         
-        // 3. 内存管理
-        function cleanupParticles() {
-            if (particles.length > CONFIG.maxParticles * 1.5) {
-                // 移除屏幕外的粒子
-                particles = particles.filter(p => {
-                    return p.y < canvas.height + 100 && 
-                           p.x < canvas.width + 100 && 
-                           p.x > -100;
-                });
+        // 其他游戏加载函数（简略实现）
+        function loadPuzzleGame() {
+            gameContainer.innerHTML = `
+                <div style="text-align: center;">
+                    <h2 style="color: var(--accent-color); margin-bottom: 20px;">解压拼图</h2>
+                    <p>拖动方块完成拼图，放松心情</p>
+                    <div style="margin: 30px 0; padding: 20px; background: rgba(0,0,0,0.2); border-radius: 10px;">
+                        <p>拼图游戏正在开发中...</p>
+                        <p style="margin-top: 10px; font-size: 0.9rem; color: #aaa;">未来版本将提供完整的拼图功能</p>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function loadMemoryGame() {
+            gameContainer.innerHTML = `
+                <div style="text-align: center;">
+                    <h2 style="color: var(--accent-color); margin-bottom: 20px;">记忆挑战</h2>
+                    <p>测试你的记忆力，匹配相同的图案</p>
+                    <div style="margin: 30px 0; padding: 20px; background: rgba(0,0,0,0.2); border-radius: 10px;">
+                        <p>记忆游戏正在开发中...</p>
+                        <p style="margin-top: 10px; font-size: 0.9rem; color: #aaa;">未来版本将提供完整的记忆挑战功能</p>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // 游戏卡片点击事件
+        gameCards.forEach(card => {
+            card.addEventListener('click', function() {
+                const gameType = this.getAttribute('data-game');
+                
+                // 根据游戏类型加载相应游戏
+                switch(gameType) {
+                    case 'dice':
+                        loadDiceGame();
+                        break;
+                    case 'luck':
+                        loadLuckGame();
+                        break;
+                    case 'puzzle':
+                        loadPuzzleGame();
+                        break;
+                    case 'memory':
+                        loadMemoryGame();
+                        break;
+                }
+                
+                // 显示模态框
+                gameModal.style.display = 'flex';
+            });
+        });
+        
+        // 关闭模态框
+        closeModal.addEventListener('click', function() {
+            gameModal.style.display = 'none';
+        });
+        
+        // 点击模态框外部关闭
+        window.addEventListener('click', function(e) {
+            if (e.target === gameModal) {
+                gameModal.style.display = 'none';
             }
-        }
+        });
         
-        // 定时清理
-        setInterval(cleanupParticles, 5000);
-        
+        // 添加一些酒吧氛围音效
+        window.addEventListener('load', function() {
+            // 延迟播放背景音乐
+            setTimeout(() => {
+                // 自动播放可能会被浏览器阻止，所以这里只设置准备好
+                console.log("背景音乐已加载，点击播放按钮开始播放");
+            }, 1000);
+            
+            // 模拟直播状态更新
+            setTimeout(() => {
+                const livePlaceholder = document.querySelector('.live-placeholder p');
+                livePlaceholder.innerHTML = "直播状态：清一色酒吧直播<br>将于每晚 20:00 - 23:00 开启<br>敬请期待！";
+            }, 2000);
+        });
     </script>
 </body>
 </html>
-
 ```
